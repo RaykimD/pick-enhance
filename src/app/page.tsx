@@ -96,7 +96,7 @@ export default function Home() {
       addEnhanceLog('success', level);
 
       // 재화 소모
-      const requirements = CRAFT_REQUIREMENTS[level];
+      const requirements = CRAFT_REQUIREMENTS[level as CraftLevel];
       setUsedResources(prev => ({
         ...prev,
         picks: {

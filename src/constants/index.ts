@@ -1,4 +1,5 @@
 type EnhancementLevel = 1 | 2 | 3 | 4;
+type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
 export const ENHANCEMENT_RATES: Record<EnhancementLevel, { success: number; destroy: number }> = {
     1: { success: 55, destroy: 45 },
@@ -7,7 +8,7 @@ export const ENHANCEMENT_RATES: Record<EnhancementLevel, { success: number; dest
     4: { success: 15, destroy: 85 }
 };
 
-export const CRAFT_REQUIREMENTS = {
+export const CRAFT_REQUIREMENTS: Record<CraftLevel, { money: number; materials: Record<string, number> }> = {
     1: {
         money: 1000,
         materials: {
@@ -48,16 +49,4 @@ export const CRAFT_REQUIREMENTS = {
             strengthenStone: 2
         }
     }
-};
-
-export const MATERIAL_NAMES: Record<keyof Materials, string> = {
-    iron: '철',
-    strengthenStone: '장비강화석',
-    wood: '참나무원목',
-    diamond: '다이아몬드',
-    emerald: '에메랄드',
-    galok: '갈옥',
-    sinseonok: '신선옥',
-    maehwaok: '매화옥',
-    steel: '강철'
 };
