@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Pick, EnhanceLog, UsedResources } from '../types';
+import { Pick, EnhanceLog, UsedResources, CraftLevel, EnhancementLevel } from '../types';
 import { ENHANCEMENT_RATES, CRAFT_REQUIREMENTS, MATERIAL_NAMES } from '../constants';
 
 const calculateEnhancementLevel = (level: number): 1 | 2 | 3 | 4 => {

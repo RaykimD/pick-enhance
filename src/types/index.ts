@@ -1,3 +1,6 @@
+export type CraftLevel = 1 | 2 | 3 | 4 | 5;
+export type EnhancementLevel = 1 | 2 | 3 | 4;
+
 export type Pick = {
     level: number;
     count: number;
@@ -10,15 +13,15 @@ export type EnhanceLog = {
 };
 
 export type Materials = {
-    iron: number;           // 철
-    strengthenStone: number;// 장비강화석
-    wood: number;          // 참나무원목
-    diamond: number;       // 다이아몬드
-    emerald: number;       // 에메랄드
-    galok: number;         // 갈옥
-    sinseonok: number;     // 신선옥
-    maehwaok: number;      // 매화옥
-    steel: number;         // 강철
+    iron: number;
+    strengthenStone: number;
+    wood: number;
+    diamond: number;
+    emerald: number;
+    galok: number;
+    sinseonok: number;
+    maehwaok: number;
+    steel: number;
 };
 
 export type UsedResources = {
