@@ -11,6 +11,10 @@ const calculateEnhancementLevel = (level: number): 1 | 2 | 3 | 4 => {
   return 1;
 };
 
+const isCraftLevel = (level: number): level is CraftLevel => {
+  return level >= 1 && level <= 5;
+};
+
 export default function Home() {
   const [picks, setPicks] = useState<Pick[]>([
     { level: 1, count: 0 },
@@ -55,7 +59,6 @@ export default function Home() {
   };
 
   const createPick = (level: number) => {
-    // 1강 곡괭이 제작
     if (level === 1) {
       setPicks(prev => prev.map(pick =>
         pick.level === 1 ? { ...pick, count: pick.count + 1 } : pick
@@ -76,7 +79,6 @@ export default function Home() {
       return;
     }
 
-    // 2강 이상 곡괭이 제작 (강화)
     const prevLevelPick = picks.find(p => p.level === level - 1);
     if (!prevLevelPick || prevLevelPick.count === 0) {
       alert(`${level - 1}강 곡괭이가 필요합니다`);
@@ -87,7 +89,6 @@ export default function Home() {
     const enhanceLevel = calculateEnhancementLevel(level);
 
     if (roll < ENHANCEMENT_RATES[enhanceLevel].success) {
-      // 성공
       setPicks(prev => prev.map(pick => {
         if (pick.level === level - 1) return { ...pick, count: pick.count - 1 };
         if (pick.level === level) return { ...pick, count: pick.count + 1 };
@@ -95,25 +96,25 @@ export default function Home() {
       }));
       addEnhanceLog('success', level);
 
-      // 재화 소모
-      const requirements = CRAFT_REQUIREMENTS[level as CraftLevel];
-      setUsedResources(prev => ({
-        ...prev,
-        picks: {
-          ...prev.picks,
-          [`level${level}`]: prev.picks[`level${level}` as keyof typeof prev.picks] + 1
-        },
-        materials: {
-          ...prev.materials,
-          ...Object.entries(requirements.materials).reduce((acc, [key, value]) => ({
-            ...acc,
-            [key]: prev.materials[key as keyof typeof prev.materials] + value
-          }), {})
-        },
-        money: prev.money + requirements.money
-      }));
+      if (isCraftLevel(level)) {
+        const requirements = CRAFT_REQUIREMENTS[level];
+        setUsedResources(prev => ({
+          ...prev,
+          picks: {
+            ...prev.picks,
+            [`level${level}`]: prev.picks[`level${level}` as keyof typeof prev.picks] + 1
+          },
+          materials: {
+            ...prev.materials,
+            ...Object.entries(requirements.materials).reduce((acc, [key, value]) => ({
+              ...acc,
+              [key]: prev.materials[key as keyof typeof prev.materials] + value
+            }), {})
+          },
+          money: prev.money + requirements.money
+        }));
+      }
     } else {
-      // 파괴
       setPicks(prev => prev.map(pick =>
         pick.level === level - 1 ? { ...pick, count: pick.count - 1 } : pick
       ));
@@ -138,7 +139,8 @@ export default function Home() {
                     onClick={() => createPick(pick.level)}
                     className="w-full bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2 text-sm"
                   >
-                    {pick.level === 1 ? '제작' : '강화'} ({CRAFT_REQUIREMENTS[pick.level].money.toLocaleString()}원)
+                    {pick.level === 1 ? '제작' : '강화'}
+                    ({isCraftLevel(pick.level) ? CRAFT_REQUIREMENTS[pick.level].money.toLocaleString() : 0}원)
                   </button>
                 </div>
               </div>
