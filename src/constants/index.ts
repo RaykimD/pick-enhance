@@ -1,3 +1,5 @@
+import { Materials } from '../types';  // Materials 타입을 import
+
 type EnhancementLevel = 1 | 2 | 3 | 4;
 type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
@@ -49,4 +51,16 @@ export const CRAFT_REQUIREMENTS: Record<CraftLevel, { money: number; materials: 
             strengthenStone: 2
         }
     }
+};
+
+export const MATERIAL_NAMES: Record<keyof Materials, string> = {
+    iron: '철',
+    strengthenStone: '장비강화석',
+    wood: '참나무원목',
+    diamond: '다이아몬드',
+    emerald: '에메랄드',
+    galok: '갈옥',
+    sinseonok: '신선옥',
+    maehwaok: '매화옥',
+    steel: '강철'
 };
