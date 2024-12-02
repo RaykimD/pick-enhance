@@ -1,4 +1,6 @@
-export const ENHANCEMENT_RATES = {
+type EnhancementLevel = 1 | 2 | 3 | 4;
+
+export const ENHANCEMENT_RATES: Record<EnhancementLevel, { success: number; destroy: number }> = {
     1: { success: 55, destroy: 45 },
     2: { success: 30, destroy: 70 },
     3: { success: 20, destroy: 80 },

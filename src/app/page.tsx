@@ -3,6 +3,14 @@ import React, { useState } from 'react';
 import { Pick, EnhanceLog, UsedResources } from '../types';
 import { ENHANCEMENT_RATES, CRAFT_REQUIREMENTS, MATERIAL_NAMES } from '../constants';
 
+const calculateEnhancementLevel = (level: number): 1 | 2 | 3 | 4 => {
+  const enhanceLevel = level - 1;
+  if (enhanceLevel >= 1 && enhanceLevel <= 4) {
+    return enhanceLevel as 1 | 2 | 3 | 4;
+  }
+  return 1;
+};
+
 export default function Home() {
   const [picks, setPicks] = useState<Pick[]>([
     { level: 1, count: 0 },
@@ -76,7 +84,9 @@ export default function Home() {
     }
 
     const roll = Math.random() * 100;
-    if (roll < ENHANCEMENT_RATES[level - 1].success) {
+    const enhanceLevel = calculateEnhancementLevel(level);
+
+    if (roll < ENHANCEMENT_RATES[enhanceLevel].success) {
       // 성공
       setPicks(prev => prev.map(pick => {
         if (pick.level === level - 1) return { ...pick, count: pick.count - 1 };
@@ -84,6 +94,24 @@ export default function Home() {
         return pick;
       }));
       addEnhanceLog('success', level);
+
+      // 재화 소모
+      const requirements = CRAFT_REQUIREMENTS[level];
+      setUsedResources(prev => ({
+        ...prev,
+        picks: {
+          ...prev.picks,
+          [`level${level}`]: prev.picks[`level${level}` as keyof typeof prev.picks] + 1
+        },
+        materials: {
+          ...prev.materials,
+          ...Object.entries(requirements.materials).reduce((acc, [key, value]) => ({
+            ...acc,
+            [key]: prev.materials[key as keyof typeof prev.materials] + value
+          }), {})
+        },
+        money: prev.money + requirements.money
+      }));
     } else {
       // 파괴
       setPicks(prev => prev.map(pick =>
@@ -91,24 +119,6 @@ export default function Home() {
       ));
       addEnhanceLog('destroy', level - 1);
     }
-
-    // 재화 소모
-    const requirements = CRAFT_REQUIREMENTS[level];
-    setUsedResources(prev => ({
-      ...prev,
-      picks: {
-        ...prev.picks,
-        [`level${level}`]: prev.picks[`level${level}` as keyof typeof prev.picks] + 1
-      },
-      materials: {
-        ...prev.materials,
-        ...Object.entries(requirements.materials).reduce((acc, [key, value]) => ({
-          ...acc,
-          [key]: prev.materials[key as keyof typeof prev.materials] + value
-        }), {})
-      },
-      money: prev.money + requirements.money
-    }));
   };
 
   return (
