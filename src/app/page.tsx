@@ -199,7 +199,7 @@ export default function Home() {
             <div className="space-y-2 text-gray-300">
               <div className="mt-4">
                 {Object.entries(usedResources.materials)
-                  .filter(([_, value]) => value > 0)
+                  .filter(([, value]) => value > 0)
                   .map(([key, value]) => (
                     <p key={key}>{MATERIAL_NAMES[key as keyof Materials]}: {value}개</p>
                   ))
