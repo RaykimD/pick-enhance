@@ -1,3 +1,5 @@
+import { Materials } from '../types';
+
 export type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
 export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: number }> = {
