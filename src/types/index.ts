@@ -11,9 +11,9 @@ export type Materials = {
 };
 
 export type Pick = {
-    level: number;
+    level: CraftLevel;
     count: number;
-};
+  };
 
 export type EnhanceLog = {
     type: 'success' | 'destroy';
