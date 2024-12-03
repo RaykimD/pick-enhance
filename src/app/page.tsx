@@ -1,7 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { Pick, EnhanceLog, UsedResources } from '../types';
-import { STONE_TYPES, ENHANCEMENT_RATES as ENHANCE_RATES, CraftLevel } from '../constants';
+import {
+  Pick,
+  EnhanceLog,
+  UsedResources,
+  STONE_TYPES,
+  ENHANCEMENT_RATES as ENHANCE_RATES,
+  CraftLevel
+} from '../types';
 
 export default function Home() {
   const [picks, setPicks] = useState<Pick[]>([
