@@ -32,13 +32,12 @@ export type UsedResources = {
     money: number;
 };
 
-export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: number }> = {
+export const ENHANCEMENT_RATES: Record<Exclude<CraftLevel, 5>, { success: number; destroy: number }> = {
     1: { success: 55, destroy: 45 },
     2: { success: 30, destroy: 70 },
     3: { success: 20, destroy: 80 },
-    4: { success: 15, destroy: 85 },
-    5: { success: 15, destroy: 85 }
-};
+    4: { success: 15, destroy: 85 }
+  };
 
 export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Partial<Record<MaterialKey, number>> }> = {
     1: {

@@ -1,14 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import { 
-  Pick, 
-  EnhanceLog, 
-  UsedResources, 
-  STONE_TYPES, 
+import {
+  Pick,
+  EnhanceLog,
+  UsedResources,
+  STONE_TYPES,
   ENHANCEMENT_RATES as ENHANCE_RATES,
   CraftLevel,
   MATERIAL_NAMES,
-  MaterialKey 
+  MaterialKey
 } from '../types';
 
 export default function Home() {
@@ -70,6 +70,9 @@ export default function Home() {
         pick.level === 1 ? { ...pick, count: pick.count + 1 } : pick
       ));
       updateResources(1);
+    } else if (level === 5) {
+      alert('이미 최대 강화 단계입니다.');
+      return;
     } else {
       const prevLevelPick = picks.find(p => p.level === level - 1);
       if (!prevLevelPick || prevLevelPick.count === 0) {
