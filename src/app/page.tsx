@@ -1,15 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  Pick,
-  EnhanceLog,
-  UsedResources,
-  STONE_TYPES,
+import { 
+  Pick, 
+  EnhanceLog, 
+  UsedResources, 
+  STONE_TYPES, 
   ENHANCEMENT_RATES as ENHANCE_RATES,
   CraftLevel,
   MATERIAL_NAMES,
-  MaterialKey,
-  Materials
+  MaterialKey 
 } from '../types';
 
 export default function Home() {
