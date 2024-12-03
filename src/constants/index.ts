@@ -1,5 +1,3 @@
-import { Materials } from '../types';
-
 type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
 export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: number }> = {
@@ -7,21 +5,50 @@ export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: n
     2: { success: 30, destroy: 70 },
     3: { success: 20, destroy: 80 },
     4: { success: 15, destroy: 85 },
-    5: { success: 15, destroy: 85 }  // 5강 추가
+    5: { success: 15, destroy: 85 }
 };
 
-export const STONE_TYPES = {
-    normal: {
-        cost: 1000,
+export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Record<string, number> }> = {
+    1: {
+        money: 1000,
         materials: {
             iron: 3,
             wood: 3
         }
     },
-    2: CRAFT_REQUIREMENTS[2],
-    3: CRAFT_REQUIREMENTS[3],
-    4: CRAFT_REQUIREMENTS[4],
-    5: CRAFT_REQUIREMENTS[5]
+    2: {
+        money: 5000,
+        materials: {
+            iron: 1,
+            galok: 2,
+            strengthenStone: 2,
+            diamond: 2
+        }
+    },
+    3: {
+        money: 10000,
+        materials: {
+            iron: 1,
+            sinseonok: 2,
+            strengthenStone: 2,
+            emerald: 2
+        }
+    },
+    4: {
+        money: 20000,
+        materials: {
+            steel: 2,
+            maehwaok: 2
+        }
+    },
+    5: {
+        money: 40000,
+        materials: {
+            steel: 2,
+            maehwaok: 2,
+            strengthenStone: 2
+        }
+    }
 };
 
 export const MATERIAL_NAMES: Record<keyof Materials, string> = {
@@ -35,5 +62,3 @@ export const MATERIAL_NAMES: Record<keyof Materials, string> = {
     maehwaok: '매화옥',
     steel: '강철'
 };
-
-export { CRAFT_REQUIREMENTS };

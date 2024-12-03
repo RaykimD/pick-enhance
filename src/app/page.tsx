@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Pick, EnhanceLog, UsedResources } from '../types';
-import { STONE_TYPES, ENHANCE_RATES, WEAPON_NAMES } from '../constants';
+import { STONE_TYPES, ENHANCEMENT_RATES as ENHANCE_RATES } from '../constants';
 
 export default function Home() {
   const [picks, setPicks] = useState<Pick[]>([
@@ -28,7 +28,6 @@ export default function Home() {
     money: 0
   });
 
-  // 강화 로그 추가
   const addEnhanceLog = (type: 'success' | 'destroy', level: number) => {
     setEnhanceLogs(prev => {
       const newLog = {
@@ -40,7 +39,6 @@ export default function Home() {
     });
   };
 
-  // 곡괭이 제작
   const createPick = (level: number) => {
     if (level === 1) {
       setPicks(prev => prev.map(pick =>
@@ -49,12 +47,12 @@ export default function Home() {
       setUsedResources(prev => ({
         ...prev,
         materials: {
-          iron: prev.materials.iron + STONE_TYPES.normal.materials.iron,
-          blackIron: prev.materials.blackIron + STONE_TYPES.normal.materials.blackIron,
-          specialIron: prev.materials.specialIron + STONE_TYPES.normal.materials.specialIron,
-          lapis: prev.materials.lapis + STONE_TYPES.normal.materials.lapis
+          iron: prev.materials.iron + STONE_TYPES[1].materials.iron,
+          blackIron: prev.materials.blackIron + (STONE_TYPES[1].materials.blackIron || 0),
+          specialIron: prev.materials.specialIron + (STONE_TYPES[1].materials.specialIron || 0),
+          lapis: prev.materials.lapis + (STONE_TYPES[1].materials.lapis || 0)
         },
-        money: prev.money + STONE_TYPES.normal.cost
+        money: prev.money + STONE_TYPES[1].money
       }));
     } else {
       const prevLevelPick = picks.find(p => p.level === level - 1);
@@ -62,7 +60,7 @@ export default function Home() {
         alert(`${level - 1}강 곡괭이가 필요합니다`);
         return;
       }
-      // 강화 시도
+
       const roll = Math.random() * 100;
       if (roll < ENHANCE_RATES[level].success) {
         setPicks(prev => prev.map(pick => {
@@ -72,36 +70,33 @@ export default function Home() {
         }));
         addEnhanceLog('success', level);
 
-        // 재화 소모 (성공)
         const stoneCost = STONE_TYPES[level];
         setUsedResources(prev => ({
           ...prev,
           materials: {
-            iron: prev.materials.iron + stoneCost.materials.iron,
-            blackIron: prev.materials.blackIron + stoneCost.materials.blackIron,
-            specialIron: prev.materials.specialIron + stoneCost.materials.specialIron,
-            lapis: prev.materials.lapis + stoneCost.materials.lapis
+            iron: prev.materials.iron + (stoneCost.materials.iron || 0),
+            blackIron: prev.materials.blackIron + (stoneCost.materials.blackIron || 0),
+            specialIron: prev.materials.specialIron + (stoneCost.materials.specialIron || 0),
+            lapis: prev.materials.lapis + (stoneCost.materials.lapis || 0)
           },
-          money: prev.money + stoneCost.cost
+          money: prev.money + stoneCost.money
         }));
       } else {
-        // 파괴
         setPicks(prev => prev.map(pick =>
           pick.level === level - 1 ? { ...pick, count: pick.count - 1 } : pick
         ));
         addEnhanceLog('destroy', level - 1);
 
-        // 재화 소모 (실패)
         const stoneCost = STONE_TYPES[level];
         setUsedResources(prev => ({
           ...prev,
           materials: {
-            iron: prev.materials.iron + stoneCost.materials.iron,
-            blackIron: prev.materials.blackIron + stoneCost.materials.blackIron,
-            specialIron: prev.materials.specialIron + stoneCost.materials.specialIron,
-            lapis: prev.materials.lapis + stoneCost.materials.lapis
+            iron: prev.materials.iron + (stoneCost.materials.iron || 0),
+            blackIron: prev.materials.blackIron + (stoneCost.materials.blackIron || 0),
+            specialIron: prev.materials.specialIron + (stoneCost.materials.specialIron || 0),
+            lapis: prev.materials.lapis + (stoneCost.materials.lapis || 0)
           },
-          money: prev.money + stoneCost.cost
+          money: prev.money + stoneCost.money
         }));
       }
     }
@@ -186,13 +181,11 @@ export default function Home() {
               {enhanceLogs.map((log) => (
                 <div
                   key={log.timestamp}
-                  className={`text-sm ${log.type === 'success' ? 'text-green-400' : 'text-red-400'
-                    }`}
+                  className={`text-sm ${log.type === 'success' ? 'text-green-400' : 'text-red-400'}`}
                 >
                   {log.type === 'success'
                     ? `${log.level}강 강화 성공`
-                    : `${log.level}강 곡괭이 파괴`
-                  }
+                    : `${log.level}강 곡괭이 파괴`}
                 </div>
               ))}
             </div>
