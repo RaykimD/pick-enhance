@@ -7,7 +7,9 @@ import {
   STONE_TYPES,
   ENHANCEMENT_RATES as ENHANCE_RATES,
   CraftLevel,
-  MATERIAL_NAMES
+  MATERIAL_NAMES,
+  MaterialKey,
+  Materials
 } from '../types';
 
 export default function Home() {
@@ -47,22 +49,28 @@ export default function Home() {
     });
   };
 
+  const updateResources = (level: CraftLevel) => {
+    setUsedResources(prev => {
+      const newMaterials = { ...prev.materials };
+
+      Object.entries(STONE_TYPES[level].materials).forEach(([key, value]) => {
+        const materialKey = key as MaterialKey;
+        newMaterials[materialKey] = (newMaterials[materialKey] || 0) + (value || 0);
+      });
+
+      return {
+        materials: newMaterials,
+        money: prev.money + STONE_TYPES[level].money
+      };
+    });
+  };
+
   const createPick = (level: CraftLevel) => {
     if (level === 1) {
       setPicks(prev => prev.map(pick =>
         pick.level === 1 ? { ...pick, count: pick.count + 1 } : pick
       ));
-      setUsedResources(prev => ({
-        ...prev,
-        materials: {
-          ...prev.materials,
-          ...Object.entries(STONE_TYPES[1].materials).reduce((acc, [key, value]) => ({
-            ...acc,
-            [key]: prev.materials[key as keyof Materials] + value
-          }), prev.materials)
-        },
-        money: prev.money + STONE_TYPES[1].money
-      }));
+      updateResources(1);
     } else {
       const prevLevelPick = picks.find(p => p.level === level - 1);
       if (!prevLevelPick || prevLevelPick.count === 0) {
@@ -85,18 +93,7 @@ export default function Home() {
         addEnhanceLog('destroy', level - 1);
       }
 
-      // 성공/실패 상관없이 재료 소모
-      setUsedResources(prev => ({
-        ...prev,
-        materials: {
-          ...prev.materials,
-          ...Object.entries(STONE_TYPES[level].materials).reduce((acc, [key, value]) => ({
-            ...acc,
-            [key]: prev.materials[key as keyof Materials] + value
-          }), prev.materials)
-        },
-        money: prev.money + STONE_TYPES[level].money
-      }));
+      updateResources(level);
     }
   };
 
@@ -201,7 +198,7 @@ export default function Home() {
                 {Object.entries(usedResources.materials)
                   .filter(([, value]) => value > 0)
                   .map(([key, value]) => (
-                    <p key={key}>{MATERIAL_NAMES[key as keyof Materials]}: {value}개</p>
+                    <p key={key}>{MATERIAL_NAMES[key as MaterialKey]}: {value}개</p>
                   ))
                 }
               </div>

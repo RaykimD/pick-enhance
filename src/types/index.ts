@@ -1,17 +1,19 @@
-
 export type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
+export type MaterialKey =
+    | 'iron'
+    | 'wood'
+    | 'diamond'
+    | 'emerald'
+    | 'galok'
+    | 'strengthenStone'
+    | 'maehwaok'
+    | 'steel'
+    | 'blackjade'
+    | 'specialSteel';
+
 export type Materials = {
-    iron: number;
-    wood: number;
-    diamond: number;
-    emerald: number;
-    galok: number;
-    strengthenStone: number;
-    maehwaok: number;
-    steel: number;
-    blackjade: number;
-    specialSteel: number;
+    [K in MaterialKey]: number;
 };
 
 export type Pick = {
@@ -26,18 +28,7 @@ export type EnhanceLog = {
 };
 
 export type UsedResources = {
-    materials: {
-        iron: number;
-        wood: number;
-        diamond: number;
-        emerald: number;
-        galok: number;
-        strengthenStone: number;
-        maehwaok: number;
-        steel: number;
-        blackjade: number;
-        specialSteel: number;
-    };
+    materials: Materials;
     money: number;
 };
 
@@ -49,7 +40,7 @@ export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: n
     5: { success: 15, destroy: 85 }
 };
 
-export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Partial<Materials> }> = {
+export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Partial<Record<MaterialKey, number>> }> = {
     1: {
         money: 1000,
         materials: {
@@ -92,7 +83,7 @@ export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Partial
     }
 };
 
-export const MATERIAL_NAMES: Record<keyof Materials, string> = {
+export const MATERIAL_NAMES: Record<MaterialKey, string> = {
     iron: '철',
     wood: '참나무원목',
     diamond: '다이아몬드',
