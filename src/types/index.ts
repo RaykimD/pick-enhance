@@ -10,7 +10,7 @@ export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: n
     5: { success: 15, destroy: 85 }
 };
 
-export const CRAFT_REQUIREMENTS: Record<CraftLevel, { money: number; materials: Record<string, number> }> = {
+export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Record<string, number> }> = {
     1: {
         money: 1000,
         materials: {
@@ -52,8 +52,6 @@ export const CRAFT_REQUIREMENTS: Record<CraftLevel, { money: number; materials: 
         }
     }
 };
-
-export const STONE_TYPES = CRAFT_REQUIREMENTS;
 
 export const MATERIAL_NAMES: Record<keyof Materials, string> = {
     iron: '철',
