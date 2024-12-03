@@ -166,12 +166,14 @@ export default function Home() {
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <h2 className="text-2xl font-bold text-white mb-4">강화 확률</h2>
             <div className="space-y-2 text-gray-300">
-              {Object.entries(ENHANCE_RATES).map(([level, rates]) => (
-                <div key={level} className="flex justify-between">
-                  <span>{level}강 → {Number(level) + 1}강:</span>
-                  <span>성공 {rates.success}% / 파괴 {rates.destroy}%</span>
-                </div>
-              ))}
+              {Object.entries(ENHANCE_RATES)
+                .filter(([level]) => Number(level) < 5)  // 5->6강 확률은 표시하지 않음
+                .map(([level, rates]) => (
+                  <div key={level} className="flex justify-between">
+                    <span>{level}강 → {Number(level) + 1}강:</span>
+                    <span>성공 {rates.success}% / 파괴 {rates.destroy}%</span>
+                  </div>
+                ))}
             </div>
           </div>
 
