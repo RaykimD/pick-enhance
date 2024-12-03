@@ -1,4 +1,4 @@
-type CraftLevel = 1 | 2 | 3 | 4 | 5;
+export type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
 export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: number }> = {
     1: { success: 55, destroy: 45 },

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Pick, EnhanceLog, UsedResources } from '../types';
-import { STONE_TYPES, ENHANCEMENT_RATES as ENHANCE_RATES } from '../constants';
+import { STONE_TYPES, ENHANCEMENT_RATES as ENHANCE_RATES, CraftLevel } from '../constants';
 
 export default function Home() {
   const [picks, setPicks] = useState<Pick[]>([
@@ -39,7 +39,7 @@ export default function Home() {
     });
   };
 
-  const createPick = (level: number) => {
+  const createPick = (level: CraftLevel) => {
     if (level === 1) {
       setPicks(prev => prev.map(pick =>
         pick.level === 1 ? { ...pick, count: pick.count + 1 } : pick
