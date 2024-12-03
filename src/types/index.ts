@@ -1,15 +1,17 @@
+
 export type CraftLevel = 1 | 2 | 3 | 4 | 5;
 
 export type Materials = {
     iron: number;
-    strengthenStone: number;
     wood: number;
     diamond: number;
     emerald: number;
     galok: number;
-    sinseonok: number;
+    strengthenStone: number;
     maehwaok: number;
     steel: number;
+    blackjade: number;
+    specialSteel: number;
 };
 
 export type Pick = {
@@ -24,16 +26,17 @@ export type EnhanceLog = {
 };
 
 export type UsedResources = {
-    stones: {
-        normal: number;
-        advanced: number;
-        supreme: number;
-    };
     materials: {
         iron: number;
-        blackIron: number;
-        specialIron: number;
-        lapis: number;
+        wood: number;
+        diamond: number;
+        emerald: number;
+        galok: number;
+        strengthenStone: number;
+        maehwaok: number;
+        steel: number;
+        blackjade: number;
+        specialSteel: number;
     };
     money: number;
 };
@@ -46,7 +49,7 @@ export const ENHANCEMENT_RATES: Record<CraftLevel, { success: number; destroy: n
     5: { success: 15, destroy: 85 }
 };
 
-export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Record<string, number> }> = {
+export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Partial<Materials> }> = {
     1: {
         money: 1000,
         materials: {
@@ -66,24 +69,24 @@ export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Record<
     3: {
         money: 10000,
         materials: {
-            iron: 1,
-            sinseonok: 2,
-            strengthenStone: 2,
-            emerald: 2
+            steel: 1,
+            emerald: 5,
+            strengthenStone: 2
         }
     },
     4: {
         money: 20000,
         materials: {
             steel: 2,
-            maehwaok: 2
+            maehwaok: 2,
+            strengthenStone: 2
         }
     },
     5: {
         money: 40000,
         materials: {
-            steel: 2,
-            maehwaok: 2,
+            blackjade: 2,
+            specialSteel: 2,
             strengthenStone: 2
         }
     }
@@ -91,12 +94,13 @@ export const STONE_TYPES: Record<CraftLevel, { money: number; materials: Record<
 
 export const MATERIAL_NAMES: Record<keyof Materials, string> = {
     iron: '철',
-    strengthenStone: '장비강화석',
     wood: '참나무원목',
     diamond: '다이아몬드',
     emerald: '에메랄드',
     galok: '갈옥',
-    sinseonok: '신선옥',
+    strengthenStone: '장비강화석',
     maehwaok: '매화옥',
-    steel: '강철'
+    steel: '강철',
+    blackjade: '흑옥',
+    specialSteel: '오금철'
 };

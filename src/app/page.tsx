@@ -6,7 +6,8 @@ import {
   UsedResources,
   STONE_TYPES,
   ENHANCEMENT_RATES as ENHANCE_RATES,
-  CraftLevel
+  CraftLevel,
+  MATERIAL_NAMES
 } from '../types';
 
 export default function Home() {
@@ -20,16 +21,17 @@ export default function Home() {
 
   const [enhanceLogs, setEnhanceLogs] = useState<EnhanceLog[]>([]);
   const [usedResources, setUsedResources] = useState<UsedResources>({
-    stones: {
-      normal: 0,
-      advanced: 0,
-      supreme: 0
-    },
     materials: {
       iron: 0,
-      blackIron: 0,
-      specialIron: 0,
-      lapis: 0
+      wood: 0,
+      diamond: 0,
+      emerald: 0,
+      galok: 0,
+      strengthenStone: 0,
+      maehwaok: 0,
+      steel: 0,
+      blackjade: 0,
+      specialSteel: 0
     },
     money: 0
   });
@@ -53,10 +55,11 @@ export default function Home() {
       setUsedResources(prev => ({
         ...prev,
         materials: {
-          iron: prev.materials.iron + STONE_TYPES[1].materials.iron,
-          blackIron: prev.materials.blackIron + (STONE_TYPES[1].materials.blackIron || 0),
-          specialIron: prev.materials.specialIron + (STONE_TYPES[1].materials.specialIron || 0),
-          lapis: prev.materials.lapis + (STONE_TYPES[1].materials.lapis || 0)
+          ...prev.materials,
+          ...Object.entries(STONE_TYPES[1].materials).reduce((acc, [key, value]) => ({
+            ...acc,
+            [key]: prev.materials[key as keyof Materials] + value
+          }), prev.materials)
         },
         money: prev.money + STONE_TYPES[1].money
       }));
@@ -75,36 +78,25 @@ export default function Home() {
           return pick;
         }));
         addEnhanceLog('success', level);
-
-        const stoneCost = STONE_TYPES[level];
-        setUsedResources(prev => ({
-          ...prev,
-          materials: {
-            iron: prev.materials.iron + (stoneCost.materials.iron || 0),
-            blackIron: prev.materials.blackIron + (stoneCost.materials.blackIron || 0),
-            specialIron: prev.materials.specialIron + (stoneCost.materials.specialIron || 0),
-            lapis: prev.materials.lapis + (stoneCost.materials.lapis || 0)
-          },
-          money: prev.money + stoneCost.money
-        }));
       } else {
         setPicks(prev => prev.map(pick =>
           pick.level === level - 1 ? { ...pick, count: pick.count - 1 } : pick
         ));
         addEnhanceLog('destroy', level - 1);
-
-        const stoneCost = STONE_TYPES[level];
-        setUsedResources(prev => ({
-          ...prev,
-          materials: {
-            iron: prev.materials.iron + (stoneCost.materials.iron || 0),
-            blackIron: prev.materials.blackIron + (stoneCost.materials.blackIron || 0),
-            specialIron: prev.materials.specialIron + (stoneCost.materials.specialIron || 0),
-            lapis: prev.materials.lapis + (stoneCost.materials.lapis || 0)
-          },
-          money: prev.money + stoneCost.money
-        }));
       }
+
+      // 성공/실패 상관없이 재료 소모
+      setUsedResources(prev => ({
+        ...prev,
+        materials: {
+          ...prev.materials,
+          ...Object.entries(STONE_TYPES[level].materials).reduce((acc, [key, value]) => ({
+            ...acc,
+            [key]: prev.materials[key as keyof Materials] + value
+          }), prev.materials)
+        },
+        money: prev.money + STONE_TYPES[level].money
+      }));
     }
   };
 
@@ -131,12 +123,17 @@ export default function Home() {
                 ]);
                 setEnhanceLogs([]);
                 setUsedResources({
-                  stones: { normal: 0, advanced: 0, supreme: 0 },
                   materials: {
                     iron: 0,
-                    blackIron: 0,
-                    specialIron: 0,
-                    lapis: 0
+                    wood: 0,
+                    diamond: 0,
+                    emerald: 0,
+                    galok: 0,
+                    strengthenStone: 0,
+                    maehwaok: 0,
+                    steel: 0,
+                    blackjade: 0,
+                    specialSteel: 0
                   },
                   money: 0
                 });
@@ -157,7 +154,7 @@ export default function Home() {
                 <p className="text-blue-400 mb-4">보유: {pick.count}개</p>
                 <div className="space-y-2">
                   <button
-                    onClick={() => createPick(pick.level)}
+                    onClick={() => createPick(pick.level as CraftLevel)}
                     className="w-full bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2 text-sm"
                   >
                     제작
@@ -201,10 +198,12 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-white mb-4">사용된 재화</h2>
             <div className="space-y-2 text-gray-300">
               <div className="mt-4">
-                <p>철: {usedResources.materials.iron}개</p>
-                <p>묵철: {usedResources.materials.blackIron}개</p>
-                <p>오철: {usedResources.materials.specialIron}개</p>
-                <p>청금석: {usedResources.materials.lapis}개</p>
+                {Object.entries(usedResources.materials)
+                  .filter(([_, value]) => value > 0)
+                  .map(([key, value]) => (
+                    <p key={key}>{MATERIAL_NAMES[key as keyof Materials]}: {value}개</p>
+                  ))
+                }
               </div>
               <div className="mt-4">
                 <p>총 사용 금액: {usedResources.money.toLocaleString()}원</p>
