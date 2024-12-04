@@ -79,7 +79,7 @@ export default function Home() {
 
       // 5강까지는 강화 시도 가능하도록 수정
       const roll = Math.random() * 100;
-      if (roll < ENHANCE_RATES[level as Exclude<CraftLevel, 5>].success) {
+      if (roll < ENHANCE_RATES[level - 1 as CraftLevel].success) {
         setPicks(prev => prev.map(pick => {
           if (pick.level === level - 1) return { ...pick, count: pick.count - 1 };
           if (pick.level === level) return { ...pick, count: pick.count + 1 };
